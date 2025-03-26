@@ -6,6 +6,7 @@ import webhookBodySchema, { WebhookBody } from '../schemas/webhookBody';
 import webhookResponseSchema from '../schemas/webhookResponse';
 import { createTransaction, getAccessToken } from '../services/omno.service';
 import { websocketManager } from '../plugins/websocket';
+import { handleError } from '../utils/errorHandler';
 
 
 const transactionRoutes: FastifyPluginAsync = async (server) => {
@@ -31,11 +32,8 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
       reply.send({...response, orderId });
     } catch (error: any) {
       server.log.error('Error creating transaction:', error);
-      if (error?.response?.status === 400) {
-        reply.code(400).send({ error: 'Invalid transaction data' });
-      } else {
-        reply.code(500).send({ error: 'Failed to create transaction' });
-      }
+
+      handleError(error, reply);
     }
   });
 
@@ -70,10 +68,11 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
 
       server.log.debug('Webhook received:', { orderId, data: webhookData });
 
-      reply.send({ status: 'ok' });
+      reply.send({ status: 'Webhook received', });
     } catch (error: any) {
       server.log.error('Error processing webhook:', error);
-      reply.code(500).send({ error: 'Failed to process webhook' });
+
+      handleError(error, reply);
     }
   });
 };
