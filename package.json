@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "debug": "node --inspect-brk -r ts-node/register src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^6.2.0",
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/swagger-ui": "^5.2.2",
+    "@fastify/websocket": "^11.0.2",
+    "@types/axios": "^0.9.36",
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.1",
+    "typescript": "^5.8.2",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.13",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
+  }
+}

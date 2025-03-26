@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "npx tsc",
+      "group": "build",
+      "problemMatcher": ["$tsc"],
+      "detail": "Compiles TypeScript files"
+    },
+    {
+      "label": "Start",
+      "type": "shell",
+      "command": "npm run dev",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "dependsOn": ["Build"],
+      "detail": "Runs the application with nodemon and ts-node"
+    },
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "npm run build && npm start",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc"],
+      "detail": "Builds and starts the app"
+    }
+  ]
+}
