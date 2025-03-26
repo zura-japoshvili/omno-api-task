@@ -32,7 +32,7 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
 
       reply.send({...response, orderId });
     } catch (error: any) {
-      server.log.error(`Error creating transaction: ${JSON.stringify(error)}`);
+      server.log.error(`Error creating transaction: ${JSON.stringify(error.message)}`);
 
       handleError(error, reply);
     }
@@ -51,24 +51,23 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
 
       server.log.info(`Webhook received: ${ JSON.stringify({orderId, data: webhookData })}`);
 
-
-      // Check for 3dsRedirectUrl and send via WebSocket if present and non-empty
       const redirectUrl = webhookData['3dsRedirectUrl'];
-      if (redirectUrl && redirectUrl !== '') {
-        const sent = websocketManager.send(orderId, {
-          orderId,
-          status: webhookData.status,
-          redirectUrl
-        });
-        
-        if (sent) {
-          server.log.info(`Sent 3dsRedirectUrl via WebSocket: ${JSON.stringify({ orderId, redirectUrl })}`);
-        } else {
-          server.log.warn('No WebSocket connection found for orderId:' + orderId);
-        }
+
+      const sent = websocketManager.send(orderId, {
+        orderId,
+        status: webhookData.status,
+        redirectUrl
+      });
+      
+      if (sent) {
+        server.log.info(`Sent 3dsRedirectUrl via WebSocket: ${JSON.stringify({ orderId, redirectUrl })}`);
+      } else {
+        server.log.warn('No WebSocket connection found for orderId:' + orderId);
       }
 
       reply.send({ status: 'Webhook received', });
+
+
     } catch (error: any) {
       server.log.error(`Error processing webhook: ${JSON.stringify(error)})`);
 
