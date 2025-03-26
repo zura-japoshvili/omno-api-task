@@ -1,11 +1,10 @@
 import fastify, { FastifyInstance } from 'fastify';
 import transactionRoutes from './routes/transactions.route';
 import swaggerPlugin from './plugins/swagger';
-import dotenv from 'dotenv';
 import fastifyWebsocket from '@fastify/websocket';
 import config from './config/config';
 
-const server: FastifyInstance = fastify({ logger: true });
+const server: FastifyInstance = fastify({ logger: true,  });
 
 server.register(fastifyWebsocket);
 server.register(swaggerPlugin);

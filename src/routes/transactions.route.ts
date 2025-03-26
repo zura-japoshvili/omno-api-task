@@ -23,8 +23,6 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
       const hookUrl = `${config.webhookBaseUrl}/api/webhook`;
       const transactionData = { ...request.body, orderId, hookUrl };
 
-
-
       const accessToken = await getAccessToken(
         config.omnoClientId!,
         config.omnoClientSecret!
@@ -34,7 +32,7 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
 
       reply.send({...response, orderId });
     } catch (error: any) {
-      server.log.error('Error creating transaction:', error);
+      server.log.error(`Error creating transaction: ${JSON.stringify(error)}`);
 
       handleError(error, reply);
     }
@@ -51,7 +49,8 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
       const webhookData = request.body;
       const orderId = webhookData.orderId;
 
-      server.log.info('Webhook received:', { orderId, data: webhookData });
+      server.log.info(`Webhook received: ${ JSON.stringify({orderId, data: webhookData })}`);
+
 
       // Check for 3dsRedirectUrl and send via WebSocket if present and non-empty
       const redirectUrl = webhookData['3dsRedirectUrl'];
@@ -63,17 +62,15 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
         });
         
         if (sent) {
-          server.log.info('Sent 3dsRedirectUrl via WebSocket:', { orderId, redirectUrl });
+          server.log.info(`Sent 3dsRedirectUrl via WebSocket: ${JSON.stringify({ orderId, redirectUrl })}`);
         } else {
-          server.log.warn('No WebSocket connection found for orderId:', orderId);
+          server.log.warn('No WebSocket connection found for orderId:' + orderId);
         }
       }
 
-      server.log.debug('Webhook received:', { orderId, data: webhookData });
-
       reply.send({ status: 'Webhook received', });
     } catch (error: any) {
-      server.log.error('Error processing webhook:', error);
+      server.log.error(`Error processing webhook: ${JSON.stringify(error)})`);
 
       handleError(error, reply);
     }

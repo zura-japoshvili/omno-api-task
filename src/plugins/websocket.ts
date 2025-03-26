@@ -34,7 +34,6 @@ class WebSocketManager {
         try {
           socket.send(JSON.stringify(message));
         } catch (error) {
-          console.error(`Failed to send message to a socket in room ${clientId}:`, error);
           success = false;
         }
       }
