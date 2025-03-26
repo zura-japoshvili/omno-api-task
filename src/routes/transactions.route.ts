@@ -7,6 +7,7 @@ import webhookResponseSchema from '../schemas/webhookResponse';
 import { createTransaction, getAccessToken } from '../services/omno.service';
 import { websocketManager } from '../plugins/websocket';
 import { handleError } from '../utils/errorHandler';
+import config from '../config/config';
 
 
 const transactionRoutes: FastifyPluginAsync = async (server) => {
@@ -19,14 +20,14 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
   }, async (request: FastifyRequest<{ Body: CreateTransactionBody }>, reply) => {
     try {
       const orderId = uuidv4();
-      const hookUrl = `${process.env.WEBHOOK_BASE_URL}/api/webhook`;
+      const hookUrl = `${config.webhookBaseUrl}/api/webhook`;
       const transactionData = { ...request.body, orderId, hookUrl };
 
 
 
       const accessToken = await getAccessToken(
-        process.env.OMNO_CLIENT_ID!,
-        process.env.OMNO_CLIENT_SECRET!
+        config.omnoClientId!,
+        config.omnoClientSecret!
       );
 
       const response = await createTransaction(accessToken, transactionData);

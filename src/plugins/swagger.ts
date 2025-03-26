@@ -3,11 +3,12 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyAutoload from '@fastify/autoload';
 import path from 'path';
+import config from '../config/config';
 
 const swaggerPlugin: FastifyPluginCallback = (server, opts, done) => {
-  const BASE_URL = (process.env.BASE_URL || 'http://localhost').replace('http://', ''); // Remove http:// if present
-  const PORT = process.env.PORT || 3000;
-  const host = `${BASE_URL}:${PORT}`;
+  const swaggerUrl = (config.baseUrl).replace('http://', ''); // Remove http:// if present
+
+  const host = `${swaggerUrl}:${config.port}`;
 
   server.register(fastifySwagger, {
     swagger: {

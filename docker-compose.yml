@@ -7,17 +7,15 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000
-      - BASE_URL=http://localhost
-      - WEBHOOK_BASE_URL= <Your webhook base url>
-      - OMNO_CLIENT_ID= <Your client id>
-      - OMNO_CLIENT_SECRET= <Your secret key>
-      - HOST=0.0.0.0
-
+      - PORT=${PORT}
+      - BASE_URL=${BASE_URL}
+      - WEBHOOK_BASE_URL=${WEBHOOK_BASE_URL}
+      - OMNO_CLIENT_ID=${OMNO_CLIENT_ID}
+      - OMNO_CLIENT_SECRET=${OMNO_CLIENT_SECRET}
   ngrok:
     image: ngrok/ngrok
     environment:
-      - NGROK_AUTHTOKEN= <Your ngrok auth token>
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
     command: http host.docker.internal:3000
     ports:
       - "4040:4040"

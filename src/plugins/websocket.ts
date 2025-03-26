@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import { WebSocket } from 'ws';
+import config from '../config/config';
 
 class WebSocketManager {
   private connections = new Map<string, Set<WebSocket>>();
@@ -48,7 +49,7 @@ const websocketPlugin: FastifyPluginAsync = async (fastify) => {
   await fastify.register(import('@fastify/websocket'));
 
   fastify.get('/ws', { websocket: true }, (socket, req) => {
-    const url = new URL(`http://localhost${req.url}`);
+    const url = new URL(`${config.baseUrl}${req.url}`);
     const clientId = url.searchParams.get('clientId'); 
 
     if (!clientId) {
