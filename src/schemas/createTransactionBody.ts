@@ -68,7 +68,6 @@ export const createTransactionBodySchema: JSONSchemaType<CreateTransactionBody> 
     'amount',
     'currency',
     'lang',
-    'hookUrl',
     'callback',
     'callbackFail',
     'billing',

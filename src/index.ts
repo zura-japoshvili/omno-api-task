@@ -8,6 +8,7 @@ dotenv.config();
 
 const PORT = Number(process.env.PORT) || 3000;
 const BASE_URL = process.env.BASE_URL || 'http://localhost';
+const HOST = process.env.HOST || '0.0.0.0';
 
 const server: FastifyInstance = fastify({ logger: true });
 
@@ -16,8 +17,7 @@ server.register(swaggerPlugin);
 
 server.register(transactionRoutes);
 
-
-server.listen({ port: PORT }, (err: Error | null) => {
+server.listen({ port: 3000, host: '0.0.0.0' }, (err: Error | null) => {
   if (err) {
     server.log.error(err);
     process.exit(1);

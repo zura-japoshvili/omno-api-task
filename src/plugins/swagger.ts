@@ -5,7 +5,7 @@ import fastifyAutoload from '@fastify/autoload';
 import path from 'path';
 
 const swaggerPlugin: FastifyPluginCallback = (server, opts, done) => {
-  const BASE_URL = process.env.BASE_URL || 'localhost';
+  const BASE_URL = (process.env.BASE_URL || 'http://localhost').replace('http://', ''); // Remove http:// if present
   const PORT = process.env.PORT || 3000;
   const host = `${BASE_URL}:${PORT}`;
 

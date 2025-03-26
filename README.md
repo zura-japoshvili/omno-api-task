@@ -93,29 +93,64 @@ You can test the API using **Swagger UI**, **Postman**, or **cURL**. Postman als
 2. **Test HTTP Endpoints**
    - **Create Transaction**:
      - Method: `POST`
-     - URL: `http://localhost:3000/create-transaction`
+     - URL: `http://localhost:3000/api/create-transaction`
      - Headers: `Content-Type: application/json`
      - Body (raw JSON):
        ```json
-       {
-         "amount": 100,
-         "currency": "USD",
-         "lang": "en",
-         "callback": "http://example.com/success",
-         "callbackFail": "http://example.com/fail",
-         "billing": {
-           "firstName": "John",
-           "lastName": "Doe",
-           "address1": "123 Street",
-           "city": "Tbilisi",
-           "state": "TB",
-           "country": "GE",
-           "postalCode": "0100",
-           "phone": "+995555123456",
-           "email": "john.doe@example.com"
-         },
-         "orderId": "test-order-123"
-       }
+        {
+          "amount": 49.99,
+          "currency": "EUR",
+          "lang": "en",
+          "callback": "https://shop.example.com/payment/success",
+          "callbackFail": "https://shop.example.com/payment/fail",
+          "billing": {
+            "firstName": "Marie",
+            "lastName": "Lefèvre",
+            "address1": "15 Rue de la Paix",
+            "city": "Paris",
+            "state": "Île-de-France",
+            "country": "FR",
+            "postalCode": "75002",
+            "phone": "+33 6 12 34 56 78",
+            "email": "marie.lefevre@example.com",
+            "externalUserId": "user_789456",
+            "dateOfBirth": "1985-03-15"
+          },
+          "orderId": "ord_20250326_001",
+          "cardData": {
+            "cardNumber": "4539 1488 0343 6467",
+            "cardHolderName": "Marie Lefèvre",
+            "cardExpiryDate": "06",
+            "cardExpiryDate2": "2026",
+            "cardCvv": "345",
+            "browser": {
+              "colorDepth": 24,
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+              "language": "fr-FR",
+              "timeZone": "Europe/Paris",
+              "screenWidth": 1920,
+              "javaEnabled": false,
+              "customerIp": "85.23.45.67",
+              "screenHeight": 1080,
+              "windowHeight": 1000,
+              "timeZoneOffset": -60,
+              "windowWidth": 1600
+            }
+          },
+          "saveCard": true,
+          "payment3dsType": "Redirection",
+          "merchantInformation": {
+            "name": "Paris Boutique",
+            "merchantName": "PB Fashion",
+            "country": "FR",
+            "address1": "10 Avenue des Champs-Élysées",
+            "locality": "Paris",
+            "postalCode": "75008",
+            "url": "https://parisboutique.com",
+            "categoryCode": "5651"
+          }
+        }
+      ``` 
     - Send the request and note the `orderId` in the response.
 
 - **Simulate Webhook**:
@@ -138,19 +173,75 @@ You can test the API using **Swagger UI**, **Postman**, or **cURL**. Postman als
 - Send the webhook request (above), and you should see a message like:
 json
 ```bash
-{"orderId": "test-order-123", "status": "pending", "redirectUrl": "https://example.com/3ds"}
+{"id": "231123", "orderId": "test-order-123", "status": "pending", "redirectUrl": "https://example.com/3ds"}
 ```
 
 ### cURL
 1. Create Transaction
 
 ```bash
-curl -X POST http://localhost:3000/create-transaction \
--H "Content-Type: application/json" \
--d '{"amount": 100, "currency": "USD", "lang": "en", "hookUrl": "https://<your-ngrok-url>.ngrok-free.app/webhook", "callback": "http://example.com/success", "callbackFail": "http://example.com/fail", "billing": {"firstName": "John", "lastName": "Doe", "address1": "123 Street", "city": "Tbilisi", "state": "TB", "country": "GE", "postalCode": "0100", "phone": "+995555123456", "email": "john.doe@example.com"}, "orderId": "test-order-123"}'
+curl -X POST http://localhost:3000/api/create-transaction \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 49.99,
+    "currency": "EUR",
+    "lang": "en",
+    "callback": "https://shop.example.com/payment/success",
+    "callbackFail": "https://shop.example.com/payment/fail",
+    "billing": {
+      "firstName": "Marie",
+      "lastName": "Lefèvre",
+      "address1": "15 Rue de la Paix",
+      "city": "Paris",
+      "state": "Île-de-France",
+      "country": "FR",
+      "postalCode": "75002",
+      "phone": "+33 6 12 34 56 78",
+      "email": "marie.lefevre@example.com",
+      "externalUserId": "user_789456",
+      "dateOfBirth": "1985-03-15"
+    },
+    "orderId": "ord_20250326_001",
+    "cardData": {
+      "cardNumber": "4539 1488 0343 6467",
+      "cardHolderName": "Marie Lefèvre",
+      "cardExpiryDate": "06",
+      "cardExpiryDate2": "2026",
+      "cardCvv": "345",
+      "browser": {
+        "colorDepth": 24,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "language": "fr-FR",
+        "timeZone": "Europe/Paris",
+        "screenWidth": 1920,
+        "javaEnabled": false,
+        "customerIp": "85.23.45.67",
+        "screenHeight": 1080,
+        "windowHeight": 1000,
+        "timeZoneOffset": -60,
+        "windowWidth": 1600
+      }
+    },
+    "saveCard": true,
+    "payment3dsType": "Redirection",
+    "merchantInformation": {
+      "name": "Paris Boutique",
+      "merchantName": "PB Fashion",
+      "country": "FR",
+      "address1": "10 Avenue des Champs-Élysées",
+      "locality": "Paris",
+      "postalCode": "75008",
+      "url": "https://parisboutique.com",
+      "categoryCode": "5651"
+    }
+  }'
 ```
 2. Simulate Webhook
 ```bash
-curl -X POST https://<your-ngrok-url>.ngrok-free.app/webhook \
+curl -X POST <your-ngrok-url>/api/webhook \
 -H "Content-Type: application/json" \
--d '{"orderId": "test-order-123", "status": "pending", "3dsRedirectUrl": "https://example.com/3ds"}'
+-d '{"id": "231312", "orderId": "test-order-123", "status": "pending", "3dsRedirectUrl": "https://example.com/3ds"}'
+
+
+
+

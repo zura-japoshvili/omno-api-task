@@ -19,8 +19,10 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
   }, async (request: FastifyRequest<{ Body: CreateTransactionBody }>, reply) => {
     try {
       const orderId = uuidv4();
-      const hookUrl = `${process.env.WEBHOOK_BASE_URL}/webhook`;
+      const hookUrl = `${process.env.WEBHOOK_BASE_URL}/api/webhook`;
       const transactionData = { ...request.body, orderId, hookUrl };
+
+
 
       const accessToken = await getAccessToken(
         process.env.OMNO_CLIENT_ID!,
