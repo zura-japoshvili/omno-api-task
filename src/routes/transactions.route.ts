@@ -53,7 +53,7 @@ const transactionRoutes: FastifyPluginAsync = async (server) => {
 
       const redirectUrl = webhookData['3dsRedirectUrl'];
 
-      const sent = websocketManager.send(orderId, {
+      const sent = await websocketManager.sendWithRetry(server ,orderId, {
         orderId,
         status: webhookData.status,
         redirectUrl
