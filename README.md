@@ -48,8 +48,11 @@ This project integrates with the Omno API to:
 
 1. **Clone the Repository**
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/zura-japoshvili/omno-api-task
+   cd omno-api-task
+  > [!NOTE]
+  > The project contains an **.env.example** file. When creating the **.env** file, use this as a guide to ensure all required environment variables are set correctly.
+
 2. Start Ngrok
 Run Ngrok to expose your local server:
     ```bash
