@@ -76,7 +76,9 @@ export const createTransactionBodySchema: JSONSchemaType<CreateTransactionBody> 
   properties: {
     amount: {
       type: 'number',
-      description: 'The transaction amount'
+      description: 'The transaction amount',
+      minimum: 0.1,
+      maximum: 1000000
     },
     currency: {
       type: 'string',
@@ -145,7 +147,8 @@ export const createTransactionBodySchema: JSONSchemaType<CreateTransactionBody> 
       type: 'number',
       nullable: true, 
       default: 0,
-      description: 'Number of previous payments'
+      description: 'Number of previous payments',
+      minimum: 0
     },
     cardData: {
       type: 'object',
